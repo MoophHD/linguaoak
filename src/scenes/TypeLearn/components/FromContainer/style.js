@@ -6,7 +6,9 @@ const style = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        flexDirection: 'column'
+    }, 
+    text: {
+        fontSize: 16
     }
 }
 

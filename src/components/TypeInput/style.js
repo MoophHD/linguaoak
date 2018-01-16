@@ -3,10 +3,10 @@ import { StyleSheet } from 'react-native';
 
 const style = {
     core: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column'
+        height: 50,
+        minWidth: 200,
+        paddingLeft: 5,
+        paddingRight: 5,
     }
 }
 

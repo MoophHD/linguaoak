@@ -5,24 +5,24 @@ const initialState = {
         ids: [0, 1, 2],
         byid: {
             0: {
-                eng: 'black',
-                rus: 'черный'
+                foreigh: 'black',
+                native: 'черный'
             },
             1: {
-                eng: 'white',
-                rus: 'белый'
+                foreigh: 'white',
+                native: 'белый'
             },
             2: {
-                eng: 'yellow',
-                rus: 'желтый'
+                foreigh: 'yellow',
+                native: 'желтый'
             }
         }
     },
     performance: { // 0..3
         byid: {
             0: 1,
-            0: 2,
-            0: 0
+            1: 2,
+            2: 0
         }
     }
 
