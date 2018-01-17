@@ -1,9 +1,21 @@
-import { GUESS } from '../constants/words.constant';
+import { 
+  INCREASE_PERFORMANCE,
+  DECREASE_PERFORMANCE
+ } from '../constants/words.constant';
 
-export function guess(word, guess) {
+export function increasePerformance(id) {
   return {
-    type: GUESS,
-    word: word,
-    guess: guess
+    type: INCREASE_PERFORMANCE,
+    id: id
   }
 }
+
+export function decreasePerformance(id) {
+  return {
+    type: DECREASE_PERFORMANCE,
+    id: id
+  }
+}
+
+
+

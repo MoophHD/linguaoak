@@ -25,10 +25,12 @@ class TypeLearn extends Component {
             wordFrom: '',
             wordTo: '',
             wordQueue: [],
+            id: '',
             
             input: ''
         }
         
+        this.submit = this.submit.bind(this);
     }
 
     // PARTIALS
@@ -65,7 +67,7 @@ class TypeLearn extends Component {
         let perfById = performance.byid;
 
         //sort array of keys by value from least to largest
-        let sortedPerformance = Object.keys(perfById).sort(function(a,b){return perfById[a]-perfById[b]})
+        let sortedPerformance = Object.keys(perfById).sort((a,b) => (perfById[a]-perfById[b]));
 
         for (let i = 0; i < WORDS_PER_SECCION; i++) {
             //pick key(id) in order
@@ -82,7 +84,7 @@ class TypeLearn extends Component {
         const { byid } = this.props;
         let id, from, to, newQueue;
 
-        // 75% for foreign to native
+        // 75% for foreign -> native
         let cycleType = Math.random() > 0.25 ? CYCLE_TYPE.FOREIGH_NATIVE : CYCLE_TYPE.NATIVE_FOREIGH;
         
         newQueue = this.state.wordQueue;
@@ -95,24 +97,32 @@ class TypeLearn extends Component {
             from = byid[id].native;
             to = byid[id].foreign;
         }
-
+        console.log(from);
         this.setState(() => ({
             wordFrom: from,
             wordTo: to,
             wordQueue: newQueue,
+            id: id
         }))
     }
 
     submit() {
-        if ( this.state.input == this.state.wordTo) {
-            // dispatch + performance
+        const { increasePerformance, decreasePerformance } = this.props.actions;
+        const id = this.state.id;
+
+        if ( this.state.input.toLowerCase() == this.state.wordTo) {
+
+            increasePerformance(id);
             
         } else {
-            // dispatch - performance
+
+            decreasePerformance(id);
+            
         }
 
         //animation then confirmation btn (?)
-        this.cycle();
+
+        this.setState(() => ({input: ''}), this.cycle)
     }
 
     render() {
@@ -121,7 +131,7 @@ class TypeLearn extends Component {
             <View style={s.core}>
                 <FromContainer word={this.state.wordFrom}/>
                 <TypeInput 
-                    onSubmitEditing={this.submit}
+                    onSubmit={this.submit}
                     onChange={(text) => this.setState({input: text})}  
                     value={this.state.input}/>
             </View>
@@ -145,7 +155,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 TypeLearn.PropTypes = {
-    action: PropTypes.arrayOf(PropTypes.func)
+    actions: PropTypes.arrayOf(PropTypes.func)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TypeLearn);

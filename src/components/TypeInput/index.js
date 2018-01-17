@@ -6,11 +6,12 @@ import s from './style';
 
 class TypeInput extends Component {
     render() {
-        const { onChange, value } = this.props;
+        const { onChange, onSubmit, value } = this.props;
         
         return(
             <TextInput 
             value={value}
+            onSubmitEditing={onSubmit}
             onChangeText={(text) => onChange(text)} style={s.core} />
         )
     }
@@ -18,6 +19,7 @@ class TypeInput extends Component {
 
 TypeInput.PropTypes = {
     onChange: PropTypes.func,
+    onSubmit: PropTypes.func,
     value: PropTypes.string
 }
 
