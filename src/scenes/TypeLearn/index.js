@@ -8,13 +8,18 @@ import {
    
 import * as actions from '../../actions/words.action'
 import s from './style'
-import TypeInput from '../../components/TypeInput';
-import FromContainer from './components/FromContainer'
+import FromContainer from './components/FromContainer';
+import ToContainer from './components/ToContainer';
+import ButtonNext from './components/ButtonNext';
 
 const WORDS_PER_SECCION = 3;
 const CYCLE_TYPE = {
     NATIVE_FOREIGH: 'NATIVE_FOREIGH',
     FOREIGH_NATIVE: 'FOREIGH_NATIVE'
+}
+const VERDICT = {
+    Y: 'Y',
+    N: 'N'
 }
 
 class TypeLearn extends Component {
@@ -26,11 +31,13 @@ class TypeLearn extends Component {
             wordTo: '',
             wordQueue: [],
             id: '',
+            verdict: null,
             
             input: ''
         }
         
         this.submit = this.submit.bind(this);
+        this.cycle = this.cycle.bind(this);
     }
 
     // PARTIALS
@@ -60,7 +67,7 @@ class TypeLearn extends Component {
 
     newSeccion() {
         //clear
-        this.setState(() => ({ wordFrom: '', wordTo: '', wordQueue: [], }));
+        this.setState(() => ({ wordFrom: '', wordTo: '', wordQueue: [], verdict: null }));
 
         let wordsInSeccion = [];
         const { performance } = this.props;
@@ -81,6 +88,7 @@ class TypeLearn extends Component {
     }
 
     cycle() {
+        this.setState(() => ({ verdict: null, input: ''}));
         const { byid } = this.props;
         let id, from, to, newQueue;
 
@@ -97,47 +105,57 @@ class TypeLearn extends Component {
             from = byid[id].native;
             to = byid[id].foreign;
         }
-        console.log(from);
         this.setState(() => ({
             wordFrom: from,
             wordTo: to,
             wordQueue: newQueue,
-            id: id
+            id: id,
         }))
     }
 
     submit() {
         const { increasePerformance, decreasePerformance } = this.props.actions;
         const id = this.state.id;
+        let verdict;
 
         if ( this.state.input.toLowerCase() == this.state.wordTo) {
 
             increasePerformance(id);
-            
+            verdict = VERDICT.Y;
         } else {
 
             decreasePerformance(id);
-            
+            verdict = VERDICT.N;
         }
 
-        //animation then confirmation btn (?)
-
-        this.setState(() => ({input: ''}), this.cycle)
+        this.setState(() => ({ verdict }));
     }
 
     render() {
         const { count, actions } = this.props;
+        console.log(this.state.verdict && '1');
         return (
             <View style={s.core}>
+                {this.state.verdict && <ButtonNext onPress={this.cycle} verdict={this.state.verdict}/>}
                 <FromContainer word={this.state.wordFrom}/>
-                <TypeInput 
+                <ToContainer
+                    verdict={this.state.verdict}
                     onSubmit={this.submit}
                     onChange={(text) => this.setState({input: text})}  
-                    value={this.state.input}/>
+                    value={this.state.input}/> 
+                />
             </View>
         );
       }
 }
+
+
+{/* <TypeInput 
+verdict={this.state.verdict}
+onSubmit={this.submit}
+onChange={(text) => this.setState({input: text})}  
+value={this.state.input}/> */}
+
 
 function mapStateToProps(state) {
     const words = state.words;

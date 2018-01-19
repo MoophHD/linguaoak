@@ -3,15 +3,10 @@ import { StyleSheet } from 'react-native';
 
 const style = {
     container: {
-        backgroundColor: 'crimson',
-        flex: 2,
         display: 'flex',
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-    }, 
-    text: {
-        fontSize: 32,
-        color: '#31313'
     }
 }
 
