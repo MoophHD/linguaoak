@@ -12,8 +12,18 @@ const enchancer = compose(
     )
 );
 
-export default createStore(
-    reducer,
-    {},
-    enchancer
+export default function configureStore() {
+    const store = createStore(
+        reducer,
+        {},
+        enchancer
     );
+
+    if (module.hot) {
+        module.hot.accept(() => {
+          const nextRootReducer = require(reducers).default
+          store.replaceReducer(nextRootReducer)
+        })
+      }
+    return store;
+}

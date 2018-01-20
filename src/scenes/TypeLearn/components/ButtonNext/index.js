@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 import s from './style';
 
-console.log('!');
 const ButtonNext = ({ onPress, verdict }) => (
     <View style={s.container}>
         <Text>

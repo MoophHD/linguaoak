@@ -20,10 +20,10 @@ class ToContainer extends Component {
     }
 }
 
-ToContainer = {
-    onSubmit: PropTypes.func,
-    onChange: PropTypes.func,
-    value: PropTypes.string
-}
+// ToContainer = {
+//     onSubmit: PropTypes.func,
+//     onChange: PropTypes.func,
+//     value: PropTypes.string
+// }
 
 export default ToContainer;

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { 
-    View
+    View,
+    StyleSheet
    } from 'react-native';
    
 import * as actions from '../../actions/words.action'
@@ -33,7 +34,7 @@ class TypeLearn extends Component {
             id: '',
             verdict: null,
             
-            input: ''
+            input: ""
         }
         
         this.submit = this.submit.bind(this);
@@ -88,7 +89,7 @@ class TypeLearn extends Component {
     }
 
     cycle() {
-        this.setState(() => ({ verdict: null, input: ''}));
+        this.setState(() => ({ verdict: null, input: ""}));
         const { byid } = this.props;
         let id, from, to, newQueue;
 
@@ -117,45 +118,55 @@ class TypeLearn extends Component {
         const { increasePerformance, decreasePerformance } = this.props.actions;
         const id = this.state.id;
         let verdict;
+        // console.log(this.state.input.input.slice());
 
-        if ( this.state.input.toLowerCase() == this.state.wordTo) {
+        // if ( this.checkWords( this.state.finput.input.slice, this.state.wordTo.slice) ) {
+        //     // increasePerformance(id);
+        //     verdict = VERDICT.Y;
+        // } else {
+        //     // decreasePerformance(id); 
+        //     verdict = VERDICT.N;
+        // }
 
-            increasePerformance(id);
-            verdict = VERDICT.Y;
+
+        // this.setState(() => ({ verdict }));
+    }
+
+    checkWords(a, b) {
+        if (a.toLowerCase() == b.toLowerCase()) {
+            return true;
         } else {
-
-            decreasePerformance(id);
-            verdict = VERDICT.N;
+            return false;
         }
-
-        this.setState(() => ({ verdict }));
     }
 
     render() {
         const { count, actions } = this.props;
-        console.log(this.state.verdict && '1');
+
+        let containerStyle;
+        if (this.state.verdict) {
+            if (this.state.verdict == VERDICT.Y) {
+                containerStyle = StyleSheet.flatten([s.core, s.core__y]);
+            } else {
+                containerStyle = StyleSheet.flatten([s.core, s.core__n]);
+            }
+        } else {
+            containerStyle = s.core;
+        }
+
         return (
-            <View style={s.core}>
-                {this.state.verdict && <ButtonNext onPress={this.cycle} verdict={this.state.verdict}/>}
+            <View style={containerStyle}>
+                {!!this.state.verdict && <ButtonNext onPress={this.cycle} verdict={this.state.verdict}/>}
                 <FromContainer word={this.state.wordFrom}/>
                 <ToContainer
                     verdict={this.state.verdict}
                     onSubmit={this.submit}
                     onChange={(text) => this.setState({input: text})}  
                     value={this.state.input}/> 
-                />
             </View>
         );
       }
 }
-
-
-{/* <TypeInput 
-verdict={this.state.verdict}
-onSubmit={this.submit}
-onChange={(text) => this.setState({input: text})}  
-value={this.state.input}/> */}
-
 
 function mapStateToProps(state) {
     const words = state.words;
